@@ -1,19 +1,17 @@
 // src/pages/AnimeList.jsx
 import AddAnimeForm from '../components/AddAnimeForm';
 import AnimeCard from '../components/AnimeCard';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useLocalStorageState } from '../hooks/useLocalStorage';
 const statusOptions = ['All', 'Watching', 'Completed', 'Plan to Watch'];
 
 export default function AnimeList() {
-    const [animeList, setAnimeList] = useState(() => {
-        console.log('Loading anime list from localStorage');
-        const stored = localStorage.getItem('animeList');
-        return stored ? JSON.parse(stored) : [];
-    });
+    const [animeList, setAnimeList] = useLocalStorageState('animeList', [
+        { id: 1, title: '进击的巨人', cover: 'https://example.com/attack-on-titan.jpg', status: 'Watching' },
+        { id: 2, title: '鬼灭之刃', cover: 'https://example.com/demon-slayer.jpg', status: 'Completed' },]
+    );
     const [selectedAnime, setSelectedAnime] = useState('All');
-    useEffect(() => {
-        localStorage.setItem('animeList', JSON.stringify(animeList));
-    }, [animeList]);
+    console.log(animeList);
     const handleAddAnime = (newAnime) => {
         setAnimeList([...animeList, newAnime]);
     };
